@@ -1,0 +1,47 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<script src="@("https://unpkg.com/@microsoft/teams-js@1.4.1/dist/MicrosoftTeams.min.js")"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    microsoftTeams.initialize();
+
+    function Login() {
+        
+        var person = { "FirstName": "Andrew", "LastName": "Lock", "Age": 31 };
+
+        $.ajax({
+            dataType: 'json',
+            type: "POST",
+            data: JSON.stringify(person),
+            url: "/Index/?handler=Save",
+            contentType: "application/json; charset=utf-8",           
+            beforeSend: function (xhr) { xhr.setRequestHeader("XSRF-TOKEN", $('input:hidden[name="__RequestVerificationToken"]').val()); },
+            success: function (e) {
+                alert("Success");
+            }
+        });    
+    }
+</script>
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<form method="post">
+    <div class="text-center">
+        <h1 class="display-4">Sample for razor</h1>
+        <div>
+            <label>Email </label>
+            <input id="txtMail" type="text" /><br />
+            <label>Password </label>
+            <input id="txtPwd" type="text" /><br />
+            <input type="submit" value="Post Save" />
+            <input type="submit" value="Ajax Save" onclick="return Login()" />
+        </div>
+    </div>
+</form>
